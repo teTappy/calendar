@@ -50,7 +50,13 @@ void draw(void)
     int i = 0, j = 0;
     int day_count = 1;
 
-    printf("\n\n");
+    printf("current time:\n%s", asctime(tm));
+    
+    struct tm *new_tm = find_new_time(tm);
+    printf("    %s", asctime(new_tm));
+
+
+    printf("\n");
     for (i = 0; i < MAX_ROW; i++)
     {
         for (j = 0; j < MAX_COLUMN; j++)
@@ -170,4 +176,12 @@ bool legal_move(char key)
         default:
             return false;
     }
+}
+
+struct tm *find_new_time(struct tm *tm)
+{
+    struct tm *new_tm = tm;
+    new_tm->tm_mday = current_position;
+    mktime(new_tm);
+    return new_tm;
 }

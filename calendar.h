@@ -26,3 +26,4 @@ int days_in_month(struct tm *tm);
 
 bool legal_move(char key);
 
+struct tm *find_new_time(struct tm *tm);
