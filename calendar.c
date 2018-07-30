@@ -57,7 +57,7 @@ void draw(void)
         {   
             if (day_count == current_position)
             {
-                printf("| [%i] ", calendar[i][j]);
+                printf("| %s%i] ", (day_count > 9 ? "[" : "[ ") , calendar[i][j]);
                 current_row = i;
                 current_column = j;
             }
@@ -79,6 +79,7 @@ void draw(void)
     FILE *fp = fopen("log_draw.txt", "w");
     fprintf(fp, "daysInMon = %i\n", daysInMon);
     fprintf(fp, "day_count = %i\n", day_count);
+    fprintf(fp, "current_row = %i, current_column = %i, current_position = %i\n", current_row, current_column, current_position);
     fclose(fp);
 }
 
@@ -95,8 +96,22 @@ char keyPress(void)
 
 bool update(char key)
 {
+    int trow = current_row;
+    int tcolumn = current_column;
+    
+    if (key == 'w' && current_row > 0)
+        trow--;
+    else if (key == 's' && current_row < MAX_ROW)
+        trow++;
+    else if (key == 'a' && current_column > 0)
+        tcolumn--;
+    else if (key == 'd' && current_column < MAX_COLUMN)
+        tcolumn++;
+    else
+        return false;
 
-    //current_position = ;
+    current_position = calendar[trow][tcolumn];
+    return true;
 }
 
 int days_in_month(struct tm *tm)
@@ -135,8 +150,9 @@ int days_in_month(struct tm *tm)
     }
 }
 
-bool legal_move(key)
+bool legal_move(char key)
 {
+    // Switch is used so any key but the defined cases return false.
     switch (key)
     {
         case 'w':

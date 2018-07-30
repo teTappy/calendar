@@ -24,3 +24,5 @@ bool update(char key);
 
 int days_in_month(struct tm *tm);
 
+bool legal_move(char key);
+

@@ -21,27 +21,33 @@ int main(void)
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
     current_position = tm->tm_mday;
-    char key = 'u';
+    char key;
+    bool can_use_key = false;
+    bool running = true;
     
     init();
 
-    while (key != 27)
+    while (running)
     {
+        key = 'u';
         // clears screen using ansi escape sequences
         // credit to cs50's fifteen.c for this
         clear();
         
         draw();
         
-        while (!legal_move(key) || key != 'u');
+        while (!legal_move(key) || !can_use_key)
+        {
             key = keyPress();
-        
-        if (key != 27 || key != 'q')
-            
-            update(key);
-        
-        
 
+            // End if 'ESC' or 'q' is pressed
+            if (key == 27 || key == 'q')
+            {
+                running = false;
+                break;
+            }
+            can_use_key = update(key);
+        } 
     }
     return 0;
 }
